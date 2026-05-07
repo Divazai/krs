@@ -1,21 +1,47 @@
 <?php
 session_start();
 
-// Proteksi halaman
 if (!isset($_SESSION['login'])) {
     header("Location: login.php?pesan=belum_login");
     exit;
 }
+
+$host = 'localhost';
+$user = 'root';
+$pass = '';
+$db   = 'krs';
+$conn = mysqli_connect($host, $user, $pass, $db);
+if (!$conn) {
+    die("Koneksi gagal: " . mysqli_connect_error());
+}
+
+$nim = $_SESSION['nim'];
+$query_mhs = "SELECT semester FROM mahasiswa WHERE nim = '$nim'";
+$res_mhs = mysqli_query($conn, $query_mhs);
+$mhs = mysqli_fetch_assoc($res_mhs);
+$semester_mhs = $mhs ? $mhs['semester'] : 1;
+
+$query_cek_krs = "SELECT COUNT(*) as jml FROM krs k 
+                  JOIN mahasiswa m ON k.id_mahasiswa = m.id_mahasiswa 
+                  WHERE m.nim = '$nim' AND k.semester_ambil = $semester_mhs AND k.status = 'aktif'";
+$res_cek = mysqli_query($conn, $query_cek_krs);
+$data_cek = mysqli_fetch_assoc($res_cek);
+$sudah_mengisi = ($data_cek && $data_cek['jml'] > 0);
+
+mysqli_close($conn);
 ?>
-<title>Dashboard KRS</title>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard KRS</title>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
+        /* (CSS sama seperti sebelumnya, tidak diubah) */
         body {
             font-family: 'Baloo 2', cursive;
             background-color: #fefae0;
-            background-image: 
-                linear-gradient(#e9edc9 1px, transparent 1px),
-                linear-gradient(90deg, #e9edc9 1px, transparent 1px);
+            background-image: linear-gradient(#e9edc9 1px, transparent 1px), linear-gradient(90deg, #e9edc9 1px, transparent 1px);
             background-size: 20px 20px;
             margin: 0;
             display: flex;
@@ -27,15 +53,15 @@ if (!isset($_SESSION['login'])) {
         }
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
             background: #ffffff;
             padding: 50px 40px 40px 40px;
             position: relative;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
             transform: rotate(1deg);
             border: 1px solid #ddd;
+            border-radius: 8px;
         }
-        /* Push Pin */
         .push-pin {
             width: 24px;
             height: 24px;
@@ -75,6 +101,7 @@ if (!isset($_SESSION['login'])) {
             border-left: 5px solid #dda15e;
             margin: 20px 0;
             position: relative;
+            border-radius: 6px;
         }
         .sticky-note::before {
             content: "";
@@ -85,7 +112,6 @@ if (!isset($_SESSION['login'])) {
             position: absolute;
             top: 5px;
             right: 5px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
         .user-info p {
             margin: 5px 0;
@@ -103,20 +129,60 @@ if (!isset($_SESSION['login'])) {
             margin-top: 5px;
             font-size: 16px;
         }
-        .btn-logout {
-            display: block;
+        .alert {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+        .alert-success {
+            background: #d4edda;
+            border-left: 5px solid #2a9d8f;
+            color: #155724;
+        }
+        .alert-warning {
+            background: #fef9e6;
+            border-left: 5px solid #dda15e;
+            color: #856404;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            flex: 1;
             text-decoration: none;
             padding: 12px;
-            background: #e63946;
-            color: #fff;
             font-weight: 800;
             font-size: 18px;
             border-radius: 50px;
             text-align: center;
-            box-shadow: 3px 3px 0px #9b2226;
             transition: all 0.2s;
-            margin-top: 30px;
             text-transform: uppercase;
+        }
+        .btn-info {
+            background: #2a9d8f;
+            color: #fff;
+            box-shadow: 3px 3px 0px #1e6b5e;
+        }
+        .btn-info:hover {
+            background: #3eb9a9;
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 0px #1e6b5e;
+        }
+        .btn-info:active {
+            transform: translateY(2px);
+            box-shadow: 1px 1px 0px #1e6b5e;
+        }
+        .btn-logout {
+            background: #e63946;
+            color: #fff;
+            box-shadow: 3px 3px 0px #9b2226;
         }
         .btn-logout:hover {
             background: #f0505c;
@@ -127,28 +193,44 @@ if (!isset($_SESSION['login'])) {
             transform: translateY(2px);
             box-shadow: 1px 1px 0px #9b2226;
         }
-
         @media (max-width: 480px) {
             .container { padding: 40px 25px 30px 25px; transform: rotate(0deg); }
             .sticky-note { transform: rotate(0deg); }
+            .btn-group { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="push-pin"></div>
     <h2>Halo, Mahasiswa! 🎒</h2>
     
     <div class="sticky-note">
         <div class="user-info">
-            <p>Nama: <?= $_SESSION['nama']; ?></p>
-            <div class="nim-badge">NIM: <?= $_SESSION['nim']; ?></div>
+            <p>Nama: <?= htmlspecialchars($_SESSION['nama']); ?></p>
+            <div class="nim-badge">NIM: <?= htmlspecialchars($_SESSION['nim']); ?></div>
         </div>
     </div>
 
-    <a href="logout.php" class="btn-logout">KELUAR (LOGOUT)</a>
-</div>
+    <?php if ($sudah_mengisi): ?>
+        <div class="alert alert-success">
+            <span style="font-size:24px;">✅</span>
+            <div><strong>Anda sudah mengisi KRS Semester <?= $semester_mhs ?>.</strong></div>
+        </div>
+    <?php else: ?>
+        <div class="alert alert-warning">
+            <span style="font-size:24px;">⚠️</span>
+            <div><strong>Anda belum mengisi KRS untuk Semester <?= $semester_mhs ?>.</strong></div>
+        </div>
+    <?php endif; ?>
 
+    <div class="btn-group">
+        <a href="informasi.php" class="btn btn-info">📋 Lihat Informasi</a>
+        <?php if ($sudah_mengisi): ?>
+            <a href="krs_saya.php" class="btn btn-info" style="background:#dda15e; box-shadow:3px 3px 0px #9c6644;">📖 KRS Saya</a>
+        <?php endif; ?>
+        <a href="logout.php" class="btn btn-logout">🚪 Keluar (Logout)</a>
+    </div>
+</div>
 </body>
 </html>

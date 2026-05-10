@@ -5,14 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Sistem KRS</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-        }
-
         .box {
             max-width: 400px;
             margin: 100px auto;

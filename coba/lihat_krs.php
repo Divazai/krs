@@ -75,6 +75,7 @@ while ($row = mysqli_fetch_assoc($hasil_krs)) {
 
 <head>
     <title>KRS Saya - <?php echo htmlspecialchars($nama); ?></title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, sans-serif;

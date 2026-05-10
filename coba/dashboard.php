@@ -28,15 +28,8 @@ mysqli_close($konek);
 <head>
     <meta charset="UTF-8">
     <title>Dashboard KRS</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* CSS sederhana seperti Modul 2 */
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-        }
-
         .container {
             max-width: 600px;
             margin: 50px auto;

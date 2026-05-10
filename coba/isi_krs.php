@@ -89,14 +89,8 @@ $res_mk = mysqli_query($konek, $query_mk);
 
 <head>
     <title>Pilih KRS</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-        }
-
         .container {
             max-width: 1000px;
             margin: auto;

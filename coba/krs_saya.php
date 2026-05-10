@@ -69,6 +69,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
 
 <head>
     <title>KRS Saya</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -123,6 +124,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
         .no-print {
             display: flex;
         }
+
         .btn-back,
         .btn-batal {
             background-color: #e74c3c;
@@ -132,6 +134,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             border-radius: 4px;
             font-size: 15px;
         }
+
         .btn-batal:hover {
             background-color: #c0392b;
         }
@@ -159,6 +162,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             background-color: #3498db;
             color: white;
         }
+
         /* Tambahan style untuk tombol kunci */
         .btn-kunci {
             background-color: #2a9d8f;
@@ -171,6 +175,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             font-weight: bold;
             display: inline-block;
         }
+
         .btn-kunci:hover {
             background-color: #1e6b5e;
         }
@@ -235,7 +240,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
         <?php endif; ?>
         <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-error"> <?php echo $_SESSION['error'];
-            unset($_SESSION['error']); ?></div>
+                                            unset($_SESSION['error']); ?></div>
         <?php endif; ?>
 
         <?php if (count($krs_list) > 0): ?>

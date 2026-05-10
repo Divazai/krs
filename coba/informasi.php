@@ -12,14 +12,8 @@ if (!isset($_SESSION['login'])) {
 <head>
     <meta charset="UTF-8">
     <title>Syarat Pengisian KRS</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 20px;
-        }
-
         .container {
             max-width: 800px;
             margin: 50px auto;

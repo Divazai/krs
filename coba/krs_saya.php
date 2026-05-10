@@ -9,15 +9,30 @@ if (!isset($_SESSION['login'])) {
 
 $nim = $_SESSION['nim'];
 
-$query_mhs = "SELECT id_mahasiswa, nama, semester FROM mahasiswa WHERE nim = '$nim'";
+// Ambil data mahasiswa termasuk kunci_krs
+$query_mhs = "SELECT id_mahasiswa, nama, semester, kunci_krs FROM mahasiswa WHERE nim = '$nim'";
 $res_mhs = mysqli_query($konek, $query_mhs);
 $mhs = mysqli_fetch_assoc($res_mhs);
 if (!$mhs) die("Data mahasiswa tidak ditemukan.");
 $id_mahasiswa = $mhs['id_mahasiswa'];
 $nama = $mhs['nama'];
 $semester_mhs = $mhs['semester'];
+$is_locked = ($mhs['kunci_krs'] == 1);
 
-if (isset($_GET['batal']) && is_numeric($_GET['batal'])) {
+// Proses kunci KRS (jika belum dikunci)
+if (isset($_GET['kunci']) && !$is_locked) {
+    $update = "UPDATE mahasiswa SET kunci_krs = 1 WHERE nim = '$nim'";
+    if (mysqli_query($konek, $update)) {
+        $_SESSION['message'] = "KRS berhasil dikunci. Anda tidak dapat mengubah pilihan lagi.";
+    } else {
+        $_SESSION['error'] = "Gagal mengunci KRS.";
+    }
+    header("Location: krs_saya.php");
+    exit;
+}
+
+// Proses pembatalan mata kuliah (hanya jika belum dikunci)
+if (isset($_GET['batal']) && is_numeric($_GET['batal']) && !$is_locked) {
     $id_matkul_batal = (int)$_GET['batal'];
     $cek = mysqli_query($konek, "SELECT id_krs FROM krs WHERE id_mahasiswa = $id_mahasiswa AND id_matkul = $id_matkul_batal AND semester_ambil = $semester_mhs AND status = 'aktif'");
     if (mysqli_num_rows($cek) > 0) {
@@ -144,6 +159,21 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             background-color: #3498db;
             color: white;
         }
+        /* Tambahan style untuk tombol kunci */
+        .btn-kunci {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            margin-right: 10px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .btn-kunci:hover {
+            background-color: #1e6b5e;
+        }
 
         .alert {
             padding: 10px;
@@ -180,6 +210,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             .aksi,
             .btn-back,
             .btn-edit,
+            .btn-kunci,
             .no-print {
                 display: none;
             }
@@ -193,6 +224,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
         <div class="info-mhs">
             <span>Nama: <?php echo htmlspecialchars($nama); ?> (<?php echo htmlspecialchars($nim); ?>)</span>
             <span>Total SKS: <?php echo $total_sks; ?></span>
+            <span>Status: <?php echo $is_locked ? "Terkunci" : "Belum dikunci"; ?></span>
         </div>
 
         <?php if (isset($_SESSION['message'])): ?>
@@ -215,7 +247,7 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
                         <th>Mata Kuliah</th>
                         <th>SKS</th>
                         <th>Dosen</th>
-                        <th class="aksi">Aksi</th>
+                        <?php if (!$is_locked): ?><th class="aksi">Aksi</th><?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -227,25 +259,38 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
                             <td><?php echo htmlspecialchars($krs['nama_matkul']); ?></td>
                             <td><?php echo $krs['sks']; ?></td>
                             <td><?php echo htmlspecialchars($krs['nama_dosen'] ?? '-') . ' ' . htmlspecialchars($krs['gelar'] ?? ''); ?></td>
-                            <td class="aksi">
-                                <a href="?batal=<?php echo $krs['id_matkul']; ?>" class="btn-batal" onclick="return confirm('Yakin ingin membatalkan mata kuliah ini?')">Batal</a>
-                            </td>
+                            <?php if (!$is_locked): ?>
+                                <td class="aksi">
+                                    <a href="?batal=<?php echo $krs['id_matkul']; ?>" class="btn-batal" onclick="return confirm('Yakin ingin membatalkan mata kuliah ini?')">Batal</a>
+                                </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             <div class="total-sks">Total SKS yang diambil: <?php echo $total_sks; ?> SKS</div>
+            <?php if (!$is_locked): ?>
+                <div>
+                    <a href="?kunci=1" class="btn-kunci" onclick="return confirm('Setelah dikunci, Anda tidak bisa mengubah KRS lagi. Lanjutkan?')">Kunci KRS</a>
+                </div>
+            <?php endif; ?>
         <?php else: ?>
             <div class="kosong">
                 <p>Belum ada mata kuliah yang diambil.</p>
-                <a href="isi_krs.php" class="btn-edit">Isi KRS</a>
+                <?php if (!$is_locked): ?>
+                    <a href="isi_krs.php" class="btn-edit">Isi KRS</a>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
 
         <div class="no-print">
             <a href="dashboard.php" class="btn-back">Kembali ke Dashboard</a>
-            <a href="isi_krs.php" class="btn-edit">Edit KRS</a>
-            <button onclick="window.print()" class="btn-edit" style="background-color:#f39c12;">Cetak KRS</button>
+            <?php if (!$is_locked && count($krs_list) > 0): ?>
+                <a href="isi_krs.php" class="btn-edit">Edit KRS</a>
+            <?php endif; ?>
+            <?php if (count($krs_list) > 0): ?>
+                <button onclick="window.print()" class="btn-edit" style="background-color:#f39c12;">Cetak KRS</button>
+            <?php endif; ?>
         </div>
     </div>
 </body>

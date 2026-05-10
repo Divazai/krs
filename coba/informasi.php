@@ -100,12 +100,22 @@ if (!isset($_SESSION['login'])) {
         <div class="subtitle">Pastikan semua persyaratan berikut terpenuhi</div>
 
         <div class="info-card">
-            <h3>1. Syarat Administratif & Akademik</h3>
+            <h3>1. Persyaratan Akademik</h3>
             <ul>
-                <li><strong>Status Aktif:</strong> Kamu harus terdaftar sebagai mahasiswa aktif pada semester berjalan.</li>
-                <li><strong>Pelunasan UKT/SPP:</strong> Sudah membayar biaya kuliah atau tagihan administratif lainnya untuk membuka akses pengisian di sistem akademik (SI-UKT/Portal BIMA).</li>
-                <li><strong>Batas SKS (Indeks Prestasi):</strong> Jumlah beban mata kuliah yang bisa kamu ambil bergantung pada nilai Indeks Prestasi Semester (IPS) sebelumnya. Semakin tinggi IP-mu, semakin banyak SKS yang bisa diambil (maksimal biasanya 24 SKS).</li>
-                <li><strong>Dokumen Pendukung (Khusus Maba):</strong> Mahasiswa baru biasanya diminta melengkapi data biodata dan mengunggah dokumen seperti ijazah, KK, atau akta kelahiran sebelum bisa mengisi KRS.</li>
+                <li><strong>Batas SKS (IPK):</strong> Jumlah SKS maksimal yang boleh diambil ditentukan oleh Indeks Prestasi Semester (IPS) sebelumnya. IPK tinggi (misal >3.00) umumnya bisa mengambil hingga 24 SKS, sedangkan IPK rendah dibatasi (misal 12–18 SKS).
+                </li>
+                <li><strong>Mata Kuliah Bersyarat:</strong> Pastikan Anda sudah lulus mata kuliah tingkat awal sebelum mengambil mata kuliah lanjutannya (contoh: wajib lulus Kalkulus 1 untuk mengambil Kalkulus 2).
+                </li>
+                <li><strong>Status UKT:</strong> Anda harus melunasi biaya kuliah semester berjalan (UKT/SPP) agar sistem KRS di portal akademik otomatis terbuka.</li>
+            </ul>
+            <h3>2. Aturan Pemilihan Jadwal</h3>
+            <ul>
+                <li><strong>Hindari Jadwal Bentrok:</strong> Sistem biasanya otomatis menolak jika Anda memilih dua mata kuliah di jam yang sama.
+                </li>
+                <li><strong>Kuota Kelas:</strong> Setiap kelas memiliki kapasitas terbatas. Jika kuota penuh, Anda harus memilih kelas/dosen lain, atau menunggu kebijakan pembukaan kelas baru dari jurusan.
+                </li>
+                <li><strong>Prioritas Angkatan:</strong> Beberapa kampus membuka akses KRS secara bertahap, mendahulukan mahasiswa angkatan tua (akhir) baru kemudian angkatan di bawahnya.
+                </li>
             </ul>
         </div>
 

@@ -8,7 +8,7 @@ if (!isset($_SESSION['login'])) {
 
 $nim = $_SESSION['nim'];
 
-$query_mhs = "SELECT id_mahasiswa, nama, semester FROM mahasiswa WHERE nim = '$nim'";
+$query_mhs = "SELECT id_mahasiswa, nama, semester, ipk FROM mahasiswa WHERE nim = '$nim'";
 $res_mhs = mysqli_query($konek, $query_mhs);
 if (!$res_mhs) die("Query error: " . mysqli_error($konek));
 $mhs = mysqli_fetch_assoc($res_mhs);
@@ -17,6 +17,7 @@ if (!$mhs) die("Data mahasiswa tidak ditemukan.");
 $id_mahasiswa = $mhs['id_mahasiswa'];
 $nama = $mhs['nama'];
 $semester_mhs = $mhs['semester'];
+$ipk = $mhs['ipk'];
 
 $max_sks = 20;
 
@@ -25,6 +26,18 @@ $res_existing = mysqli_query($konek, $query_existing);
 $sudah_dipilih = [];
 while ($row = mysqli_fetch_assoc($res_existing)) {
     $sudah_dipilih[] = $row['id_matkul'];
+}
+
+if ($ipk >= 3.0) {
+    $max_sks = 24;
+} elseif ($ipk >= 2.5) {
+    $max_sks = 22;
+} elseif ($ipk >= 2.0) {
+    $max_sks = 20;
+} elseif ($ipk >= 1.5) {
+    $max_sks = 16;   
+} else {
+    $max_sks = 12;
 }
 
 $total_sks_dipilih = 0;

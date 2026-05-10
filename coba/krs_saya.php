@@ -9,7 +9,6 @@ if (!isset($_SESSION['login'])) {
 
 $nim = $_SESSION['nim'];
 
-// Ambil data mahasiswa termasuk kunci_krs
 $query_mhs = "SELECT id_mahasiswa, nama, semester, kunci_krs FROM mahasiswa WHERE nim = '$nim'";
 $res_mhs = mysqli_query($konek, $query_mhs);
 $mhs = mysqli_fetch_assoc($res_mhs);
@@ -19,7 +18,6 @@ $nama = $mhs['nama'];
 $semester_mhs = $mhs['semester'];
 $is_locked = ($mhs['kunci_krs'] == 1);
 
-// Proses kunci KRS (jika belum dikunci)
 if (isset($_GET['kunci']) && !$is_locked) {
     $update = "UPDATE mahasiswa SET kunci_krs = 1 WHERE nim = '$nim'";
     if (mysqli_query($konek, $update)) {
@@ -31,7 +29,6 @@ if (isset($_GET['kunci']) && !$is_locked) {
     exit;
 }
 
-// Proses pembatalan mata kuliah (hanya jika belum dikunci)
 if (isset($_GET['batal']) && is_numeric($_GET['batal']) && !$is_locked) {
     $id_matkul_batal = (int)$_GET['batal'];
     $cek = mysqli_query($konek, "SELECT id_krs FROM krs WHERE id_mahasiswa = $id_mahasiswa AND id_matkul = $id_matkul_batal AND semester_ambil = $semester_mhs AND status = 'aktif'");
@@ -163,7 +160,6 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             color: white;
         }
 
-        /* Tambahan style untuk tombol kunci */
         .btn-kunci {
             background-color: #2a9d8f;
             color: white;

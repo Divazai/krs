@@ -43,7 +43,6 @@ if (isset($_GET['batal'])) {
         $pesan = "Mata kuliah tidak ditemukan dalam KRS Anda.";
     }
 
-    // Redirect agar tidak terjadi pengiriman ulang data
     header("Location: krs_saya.php?info=" . urlencode($pesan));
     exit;
 }

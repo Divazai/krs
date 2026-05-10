@@ -57,7 +57,6 @@ mysqli_close($konek);
 
         .info p strong {
             min-width: 100px;
-            /* Atur lebar minimum untuk label */
             display: inline-block;
         }
 

@@ -35,7 +35,7 @@ if ($ipk >= 3.0) {
 } elseif ($ipk >= 2.0) {
     $max_sks = 20;
 } elseif ($ipk >= 1.5) {
-    $max_sks = 16;   
+    $max_sks = 16;
 } else {
     $max_sks = 12;
 }
@@ -198,8 +198,9 @@ $res_mk = mysqli_query($konek, $query_mk);
             <div class="error"> <?php echo $error; ?></div>
         <?php endif; ?>
         <?php if (isset($_SESSION['message'])): ?>
-            <div class="success"> <?php echo $_SESSION['message'];
-                                    unset($_SESSION['message']); ?></div>
+            <div class="success">
+                <?php echo $_SESSION['message'];
+                unset($_SESSION['message']); ?></div>
         <?php endif; ?>
 
         <form method="post">

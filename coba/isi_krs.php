@@ -188,10 +188,10 @@ $res_mk = mysqli_query($konek, $query_mk);
         </div>
 
         <?php if (isset($error)): ?>
-            <div class="error">❌ <?php echo $error; ?></div>
+            <div class="error"> <?php echo $error; ?></div>
         <?php endif; ?>
         <?php if (isset($_SESSION['message'])): ?>
-            <div class="success">✅ <?php echo $_SESSION['message'];
+            <div class="success"> <?php echo $_SESSION['message'];
                                     unset($_SESSION['message']); ?></div>
         <?php endif; ?>
 

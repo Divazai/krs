@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "krss";
+$db   = "krs";
 
 $konek = mysqli_connect($host, $user, $pass, $db);
 

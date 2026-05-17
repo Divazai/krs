@@ -31,7 +31,6 @@ $semester_mhs = $mhs['semester'];
 $ipk = $mhs['ipk'];
 $is_locked = ($mhs['kunci_krs'] == 1);
 
-// ========== SESUAIKAN BATAS SKS DI SINI ==========
 if ($ipk >= 3.0) {
     $max_sks = 24;
 } elseif ($ipk >= 2.5) {
@@ -39,13 +38,11 @@ if ($ipk >= 3.0) {
 } elseif ($ipk >= 2.0) {
     $max_sks = 20;
 } elseif ($ipk >= 1.5) {
-    $max_sks = 16;   // ubah jadi 15 atau 18 jika perlu
+    $max_sks = 16; 
 } else {
     $max_sks = 12;
 }
-// ================================================
 
-// Ambil KRS yang sudah dipilih
 $query_existing = "SELECT id_matkul FROM krs WHERE id_mahasiswa = $id_mahasiswa AND semester_ambil = $semester_mhs AND status = 'aktif'";
 $res_existing = mysqli_query($conn, $query_existing);
 $sudah_dipilih = [];
@@ -60,7 +57,6 @@ if (!empty($sudah_dipilih)) {
 }
 $sisa_sks = $max_sks - $total_sks_dipilih;
 
-// Proses simpan jika belum dikunci
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pilih_mk']) && !$is_locked) {
     $selected = $_POST['mk'] ?? [];
     if (empty($selected)) {
@@ -101,13 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pilih_mk']) && !$is_lo
             }
         }
     }
-    // refresh data setelah error
     $res_existing = mysqli_query($conn, $query_existing);
     $sudah_dipilih = [];
     while ($row = mysqli_fetch_assoc($res_existing)) $sudah_dipilih[] = $row['id_matkul'];
 }
 
-// Daftar mata kuliah
 $query_mk = "SELECT m.*, d.nama_dosen, (m.kuota - m.terisi) as sisa_kuota 
              FROM mata_kuliah m 
              LEFT JOIN dosen d ON m.id_dosen = d.id_dosen
@@ -138,13 +132,13 @@ $res_mk = mysqli_query($conn, $query_mk);
 </head>
 <body>
 <div class="container">
-    <h2>📋 Pilih Mata Kuliah - Semester <?= $semester_mhs ?></h2>
+    <h2> Pilih Mata Kuliah - Semester <?= $semester_mhs ?></h2>
     <div class="info">
-        <span>👤 <?= htmlspecialchars($nama) ?> (<?= $nim ?>)</span>
-        <span>🏅 IPK: <?= number_format($ipk,2) ?></span>
-        <span>🎯 Maks SKS: <?= $max_sks ?></span>
-        <span>✅ SKS terpilih: <?= $total_sks_dipilih ?></span>
-        <span>⚡ Sisa SKS: <?= $sisa_sks ?></span>
+        <span> <?= htmlspecialchars($nama) ?> (<?= $nim ?>)</span>
+        <span> IPK: <?= number_format($ipk,2) ?></span>
+        <span> Maks SKS: <?= $max_sks ?></span>
+        <span> SKS terpilih: <?= $total_sks_dipilih ?></span>
+        <span> Sisa SKS: <?= $sisa_sks ?></span>
     </div>
 
     <?php if ($is_locked): ?>
@@ -174,12 +168,12 @@ $res_mk = mysqli_query($conn, $query_mk);
             </tbody>
         </table>
         <?php if (!$is_locked): ?>
-            <button type="submit" name="pilih_mk" class="btn btn-primary">💾 Simpan KRS</button>
+            <button type="submit" name="pilih_mk" class="btn btn-primary"> Simpan KRS</button>
         <?php endif; ?>
         <a href="dashboard.php" class="btn btn-secondary">← Dashboard</a>
-        <a href="informasi.php" class="btn btn-secondary" style="background:#dda15e;">📋 Lihat Syarat</a>
+        <a href="informasi.php" class="btn btn-secondary" style="background:#dda15e;"> Lihat Syarat</a>
         <?php if ($total_sks_dipilih > 0): ?>
-            <a href="krs_saya.php" class="btn btn-primary" style="background:#2a9d8f;">📖 Lihat KRS Saya</a>
+            <a href="krs_saya.php" class="btn btn-primary" style="background:#2a9d8f;"> Lihat KRS Saya</a>
         <?php endif; ?>
     </form>
 </div>

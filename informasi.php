@@ -141,11 +141,11 @@ if (!isset($_SESSION['login'])) {
 
 <div class="container">
     <div class="push-pin"></div>
-    <h2>📌 Syarat Pengisian KRS</h2>
+    <h2> Syarat Pengisian KRS</h2>
     <div class="subtitle">Pastikan semua persyaratan berikut terpenuhi</div>
 
     <div class="info-card">
-        <h3>✅ 1. Syarat Administratif & Akademik</h3>
+        <h3> 1. Syarat Administratif & Akademik</h3>
         <ul>
             <li><strong>Status Aktif:</strong> Kamu harus terdaftar sebagai mahasiswa aktif pada semester berjalan.</li>
             <li><strong>Pelunasan UKT/SPP:</strong> Sudah membayar biaya kuliah atau tagihan administratif lainnya untuk membuka akses pengisian di sistem akademik (SIAKAD/Portal Kampus).</li>

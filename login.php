@@ -30,7 +30,6 @@
         transform: rotate(-1.5deg);
         border: 1px solid #ddd;
     }
-    /* Torn edge effect bottom */
     .box::after {
         content: "";
         position: absolute;
@@ -41,7 +40,6 @@
         background: radial-gradient(circle, transparent, transparent 50%, #fff 50%, #fff) 0% 0% / 20px 20px;
         transform: rotate(180deg);
     }
-    /* Push Pin */
     .push-pin {
         width: 24px;
         height: 24px;
@@ -141,11 +139,11 @@
 
   <?php if(isset($_GET['pesan'])): ?>
     <?php if($_GET['pesan']=='gagal'): ?>
-      <div class="msg err">❌ NIM atau Password salah!</div>
+      <div class="msg err"> NIM atau Password salah!</div>
     <?php elseif($_GET['pesan']=='belum_login'): ?>
-      <div class="msg err">⚠️ Silakan login terlebih dahulu</div>
+      <div class="msg err"> Silakan login terlebih dahulu</div>
     <?php elseif($_GET['pesan']=='logout'): ?>
-      <div class="msg ok">✅ Berhasil logout</div>
+      <div class="msg ok"> Berhasil logout</div>
     <?php endif; ?>
   <?php endif; ?>
 

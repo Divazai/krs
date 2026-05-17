@@ -22,7 +22,7 @@ $nama = $mhs['nama'];
 $semester_mhs = $mhs['semester'];
 $is_locked = ($mhs['kunci_krs'] == 1);
 
-// Proses kunci pilihan
+// ini untuk Proses kunci pilihan
 if (isset($_GET['kunci']) && !$is_locked) {
     mysqli_query($conn, "UPDATE mahasiswa SET kunci_krs = 1 WHERE nim = '$nim'");
     $_SESSION['message'] = "KRS berhasil dikunci. Anda tidak dapat mengubah pilihan lagi.";
@@ -30,7 +30,7 @@ if (isset($_GET['kunci']) && !$is_locked) {
     exit;
 }
 
-// Proses batal (hanya jika belum dikunci)
+// biar batal prosesnnya
 if (isset($_GET['batal']) && is_numeric($_GET['batal']) && !$is_locked) {
     $id_matkul_batal = (int)$_GET['batal'];
     $cek = mysqli_query($conn, "SELECT id_krs FROM krs WHERE id_mahasiswa = $id_mahasiswa AND id_matkul = $id_matkul_batal AND semester_ambil = $semester_mhs AND status = 'aktif'");
@@ -52,7 +52,6 @@ if (isset($_GET['batal']) && is_numeric($_GET['batal']) && !$is_locked) {
     exit;
 }
 
-// Ambil daftar KRS
 $query_krs = "SELECT k.id_matkul, mk.kode_matkul, mk.nama_matkul, mk.sks, 
                      d.nama_dosen, d.gelar, j.hari, j.jam_mulai, j.jam_selesai, j.ruangan
               FROM krs k
@@ -96,22 +95,22 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
 </head>
 <body>
 <div class="container">
-    <h2>📘 Kartu Rencana Studi - Semester <?= $semester_mhs ?></h2>
+    <h2> Kartu Rencana Studi - Semester <?= $semester_mhs ?></h2>
     <div class="info-mhs">
-        <span>👤 <?= htmlspecialchars($nama) ?> (<?= $nim ?>)</span>
-        <span>📖 Total SKS: <?= $total_sks ?></span>
+        <span> <?= htmlspecialchars($nama) ?> (<?= $nim ?>)</span>
+        <span> Total SKS: <?= $total_sks ?></span>
         <?php if ($is_locked): ?>
-            <span>🔒 Status: <strong>TERKUNCI</strong></span>
+            <span> Status: <strong>TERKUNCI</strong></span>
         <?php else: ?>
-            <span>🔓 Status: <strong>Belum dikunci</strong></span>
+            <span> Status: <strong>Belum dikunci</strong></span>
         <?php endif; ?>
     </div>
 
     <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-success">✅ <?= $_SESSION['message']; unset($_SESSION['message']); ?></div>
+        <div class="alert alert-success"> <?= $_SESSION['message']; unset($_SESSION['message']); ?></div>
     <?php endif; ?>
     <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-error">⚠️ <?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+        <div class="alert alert-error"> <?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
     <?php endif; ?>
 
     <?php if (count($krs_list) > 0): ?>
@@ -144,13 +143,13 @@ while ($row = mysqli_fetch_assoc($res_krs)) {
             </div>
         <?php endif; ?>
     <?php else: ?>
-        <div class="kosong">🧾 Belum ada mata kuliah. <a href="isi_krs.php">Isi KRS</a></div>
+        <div class="kosong"> Belum ada mata kuliah. <a href="isi_krs.php">Isi KRS</a></div>
     <?php endif; ?>
 
     <div class="no-print">
         <a href="dashboard.php" class="btn-back">← Dashboard</a>
-        <a href="isi_krs.php" class="btn-back" style="background:#2a9d8f;">✏️ Edit KRS</a>
-        <button onclick="window.print()" class="btn-cetak">🖨️ Cetak</button>
+        <a href="isi_krs.php" class="btn-back" style="background:#2a9d8f;"> Edit KRS</a>
+        <button onclick="window.print()" class="btn-cetak"> Cetak</button>
     </div>
 </div>
 </body>

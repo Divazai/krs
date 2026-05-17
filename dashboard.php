@@ -202,7 +202,7 @@ mysqli_close($conn);
 <body>
 <div class="container">
     <div class="push-pin"></div>
-    <h2>Halo, Mahasiswa! 🎒</h2>
+    <h2>Halo, Mahasiswa! </h2>
     
     <div class="sticky-note">
         <div class="user-info">
@@ -213,22 +213,22 @@ mysqli_close($conn);
 
     <?php if ($sudah_mengisi): ?>
         <div class="alert alert-success">
-            <span style="font-size:24px;">✅</span>
+            <span style="font-size:24px;"></span>
             <div><strong>Anda sudah mengisi KRS Semester <?= $semester_mhs ?>.</strong></div>
         </div>
     <?php else: ?>
         <div class="alert alert-warning">
-            <span style="font-size:24px;">⚠️</span>
+            <span style="font-size:24px;"></span>
             <div><strong>Anda belum mengisi KRS untuk Semester <?= $semester_mhs ?>.</strong></div>
         </div>
     <?php endif; ?>
 
     <div class="btn-group">
-        <a href="informasi.php" class="btn btn-info">📋 Lihat Informasi</a>
+        <a href="informasi.php" class="btn btn-info"> Lihat Informasi</a>
         <?php if ($sudah_mengisi): ?>
             <a href="krs_saya.php" class="btn btn-info" style="background:#dda15e; box-shadow:3px 3px 0px #9c6644;">📖 KRS Saya</a>
         <?php endif; ?>
-        <a href="logout.php" class="btn btn-logout">🚪 Keluar (Logout)</a>
+        <a href="logout.php" class="btn btn-logout"> Keluar (Logout)</a>
     </div>
 </div>
 </body>

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Proteksi halaman (hanya boleh diakses setelah login)
 if (!isset($_SESSION['login'])) {
     header("Location: login.php?pesan=belum_login");
     exit;

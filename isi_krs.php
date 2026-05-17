@@ -14,7 +14,6 @@ if (!$conn) die("Koneksi gagal: " . mysqli_connect_error());
 
 $nim = $_SESSION['nim'];
 
-// Cek kolom kunci_krs
 $cek_kolom = mysqli_query($conn, "SHOW COLUMNS FROM mahasiswa LIKE 'kunci_krs'");
 if (mysqli_num_rows($cek_kolom) == 0) {
     mysqli_query($conn, "ALTER TABLE mahasiswa ADD COLUMN kunci_krs TINYINT(1) NOT NULL DEFAULT 0");

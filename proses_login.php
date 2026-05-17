@@ -10,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $query = "SELECT * FROM mahasiswa WHERE nim='$nim' AND password='$password'";
     $result = mysqli_query($konek, $query);
 
-    // 🔥 TAMBAHKAN INI
     if(!$result){
         die("Query Error: " . mysqli_error($konek));
     }

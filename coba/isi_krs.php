@@ -231,7 +231,6 @@ $res_mk = mysqli_query($konek, $query_mk);
             </table>
             <button type="submit" name="pilih_mk" class="btn btn-primary">Simpan KRS</button>
             <a href="dashboard.php" class="btn btn-secondary">Kembali ke Dashboard</a>
-            <a href="krs_saya.php" class="btn btn-secondary">Lihat KRS Saya</a>
         </form>
     </div>
 </body>

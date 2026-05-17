@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include 'coba/koneksi.php';
 
 if (!isset($_SESSION['login'])) {
     header("Location: login.php?pesan=belum_login");
